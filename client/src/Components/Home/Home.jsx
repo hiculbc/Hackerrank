@@ -6,6 +6,7 @@ import { cookies } from "../../Cookies/cookies";
 export const Home = () => {
 
     const userId = cookies.get("userId")
+    console.log(userId);
       
   return (
     <React.Fragment>

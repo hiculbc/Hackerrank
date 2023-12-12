@@ -9,11 +9,15 @@ import { Template } from './Components/authentication/Template';
 import { Login } from './Components/authentication/Login';
 import { Signup } from './Components/authentication/Signup';
 import { Topics } from './Components/Topics/Topics';
+import {QueryClientProvider,QueryClient } from 'react-query';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
     <div className="App">
       <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,6 +26,7 @@ function App() {
         <Route path="/topics" element={<Topics />} />
         </Routes>
         <Footer />
+        </QueryClientProvider>
       </BrowserRouter>
     </div>
   );

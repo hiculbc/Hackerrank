@@ -1,8 +1,10 @@
 class QuestionsController < ApplicationController
-  def show; end
-
   def index
     @questions = Question.all
     render json: @questions
+  end
+
+  def topics
+    render json: Question.all_constants
   end
 end
