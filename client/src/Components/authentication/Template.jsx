@@ -13,6 +13,7 @@ export const Template = ({children}) => {
                   <img src="hand-coding.avif"></img>
                 </div>
             </div>
+            <div className="slant-line"></div>
         </React.Fragment>
     )
 }

@@ -1,8 +1,12 @@
 import React from "react";
 import "./Home.scss";
 import { Link } from "react-router-dom";
+import { cookies } from "../../Cookies/cookies";
 
 export const Home = () => {
+
+    const userId = cookies.get("userId")
+      
   return (
     <React.Fragment>
       <div className="heading">
@@ -10,9 +14,14 @@ export const Home = () => {
           <q>code all days lace up the pace</q>
         </h1>
         <div className="heading-two">
-          <Link to="/signup" className="btn btn-primary">Sign Up</Link>
+            {
+                userId === null && <React.Fragment>
+                    <Link to="/signup" className="btn btn-primary">Sign Up</Link>
           <div className="vertical"></div>
           <Link to="/login" className="btn btn-primary">Login</Link>
+                </React.Fragment> 
+            }
+          
         </div>
       </div>
 

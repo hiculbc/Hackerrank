@@ -4,8 +4,7 @@ h1{
 
 .template{
     display: flex;
-    height: 70vh;
-    align-items: center;
+    margin-top: 4em;
     .code{
         width: 50%;
         border-right: 2px solid rgb(209, 206, 206);
@@ -17,4 +16,19 @@ h1{
     .image{
         width: 50%;
     }
+}
+
+.login,.signup {
+    form{
+        margin: 1em;
+    }
+}
+
+.slant-line{
+    height: 1.3em;
+    width: 100%;
+    position: relative;
+    top: 10em;
+    background-color: rgb(140, 226, 247);
+    transform: rotate(4deg)
 }
