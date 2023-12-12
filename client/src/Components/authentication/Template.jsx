@@ -4,6 +4,7 @@ import "./authentication.scss";
 export const Template = ({children}) => {
     return (
         <React.Fragment>
+            <h1>A Step Closer</h1>
             <div className="template">
                 <div className="code">
                   {children}

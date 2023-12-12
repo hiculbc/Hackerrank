@@ -1,8 +1,14 @@
+h1{
+    font-family: 'Special Elite';
+}
+
 .template{
     display: flex;
-    height: 80%;
+    height: 70vh;
+    align-items: center;
     .code{
         width: 50%;
+        border-right: 2px solid rgb(209, 206, 206);
         input{
             margin: 1em auto 1em auto;
             width: 50%;

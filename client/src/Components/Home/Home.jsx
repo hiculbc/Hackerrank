@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.scss";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
@@ -9,9 +10,9 @@ export const Home = () => {
           <q>code all days lace up the pace</q>
         </h1>
         <div className="heading-two">
-          <button className="btn btn-primary">Sign Up</button>
+          <Link to="/signup" className="btn btn-primary">Sign Up</Link>
           <div className="vertical"></div>
-          <button className="btn btn-primary">Login</button>
+          <Link to="/login" className="btn btn-primary">Login</Link>
         </div>
       </div>
 
