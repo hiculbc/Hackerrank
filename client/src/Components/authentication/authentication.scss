@@ -1,0 +1,14 @@
+.template{
+    display: flex;
+    height: 80%;
+    .code{
+        width: 50%;
+        input{
+            margin: 1em auto 1em auto;
+            width: 50%;
+        }
+    }
+    .image{
+        width: 50%;
+    }
+}

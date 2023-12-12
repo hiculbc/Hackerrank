@@ -1,0 +1,46 @@
+.header{
+    display:flex;
+    background-color: rgb(233, 231, 229);
+    margin: 2em 0 2em 0;
+    padding: 0.5em 1em 0.5em 1em;
+    justify-content: space-between;
+}
+
+.footer{
+     position: relative;
+     bottom: 0em;
+}
+
+.footer-country{
+    text-align: start;
+}
+
+.footer-copyrights{
+    display:flex;
+    justify-content: space-between;
+    .policies {
+        display: flex;
+        width: 50%;
+        justify-content: space-around;
+        p{
+            padding: 0 1em 0 1em;
+        }
+        p:not(:first-child){
+            border-left: 2px solid rgb(188, 185, 185);
+        }
+    }
+}
+
+.nav-left{
+    display: flex;
+    width: 25%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-right{
+    width: 25%;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}

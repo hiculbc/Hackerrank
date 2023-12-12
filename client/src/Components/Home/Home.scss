@@ -1,0 +1,46 @@
+.heading{
+    
+    h1{
+        font-family: 'Special Elite';
+    }
+    .heading-one{
+        width: 25%;
+        margin: 0 auto 0 auto;
+    }
+    .heading-two{
+        display:flex;
+        justify-content: space-between;
+        width:30%;
+        margin: 1em auto 0 auto;
+        button{
+            padding: 0.5em 2em 0.5em 2em;
+        }
+        .vertical {
+            border-left: 2px solid rgb(122, 121, 121);
+        }
+    }
+    
+    color: rgb(12, 115, 188);
+}
+
+.sample-code{
+    display: flex;
+    background-color: rgb(104 108 121);
+    width: 80%;
+    border-radius: 3em;
+    height: 40%;
+    margin: 2em auto 0 auto;
+    justify-content: center;
+    align-items: center;
+    .sample-code-question img {
+        width: 90%;
+        height: 100%;
+        image-rendering: pixelated;
+        border-radius: 1em;
+    }
+    .sample-code-answer img {
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+    }
+}
