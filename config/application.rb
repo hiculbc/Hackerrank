@@ -13,7 +13,7 @@ module Hackerrank
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:3001'
+        origins 'http://localhost:3000'
         resource '*', headers: :any, methods: %i[get post put patch options]
       end
     end

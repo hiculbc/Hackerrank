@@ -2,6 +2,7 @@ import React from "react";
 import "./Topics.scss";
 import { useQuery, useQueries } from "react-query";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const Topics = () => {
   const fetchQuestions = () => {
@@ -28,9 +29,13 @@ export const Topics = () => {
 
   const [{data: {data: questions}},{data: {data: topics}}] = results;
 
+  const filteredQuestions = questions;
+   
+
   return  (
         <div className="list">
       <div className="topics">
+      <button className="topic-button btn btn-light">All</button>
            {topics.map(each_topic => {
              return <button className="topic-button btn btn-light">{each_topic}</button>
            })}
@@ -46,10 +51,10 @@ export const Topics = () => {
                 <th>Topic</th>
              </tr>
              {
-                questions.map(question => {
+                questions.map((question,index) => {
                     return <tr>
-                        <td>{question.id}</td>
-                        <td>{question.question.substr(0,50) + (question.question.length > 50 ? "...":"")}</td>
+                        <td>{index+1}</td>
+                        <td><Link to={`/question/${question.id}`}>{question.question.substr(0,50) + (question.question.length > 50 ? "...":"")}</Link></td>
                         <td className={question.difficulty}>{question.difficulty}</td>
                         <td>{capitalize(topics[question.topic])}</td>
                     </tr>

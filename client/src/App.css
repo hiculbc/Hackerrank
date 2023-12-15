@@ -1,6 +1,14 @@
 .App {
   text-align: center;
-  margin: 1em;
+}
+.easy,.passed{
+  color: green
+}
+.medium{
+  color: #abab02
+}
+.hard,.failed{
+  color: red
 }
 
  

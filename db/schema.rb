@@ -10,18 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_12_140755) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_055459) do
+  create_table "boiler_plates", force: :cascade do |t|
+    t.string "code"
+    t.string "language"
+    t.integer "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_boiler_plates_on_question_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "question"
     t.integer "topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "difficulty"
+    t.string "title"
+  end
+
+  create_table "solutions", force: :cascade do |t|
+    t.string "answer"
+    t.integer "question_id", null: false
+    t.integer "testcase_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_solutions_on_question_id"
+    t.index ["testcase_id"], name: "index_solutions_on_testcase_id"
   end
 
   create_table "testcases", force: :cascade do |t|
     t.string "testcase"
-    t.string "solution"
     t.integer "question_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -46,6 +65,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_140755) do
     t.string "password_digest"
   end
 
+  add_foreign_key "boiler_plates", "questions"
+  add_foreign_key "solutions", "questions"
+  add_foreign_key "solutions", "testcases"
   add_foreign_key "testcases", "questions"
   add_foreign_key "user_question_statuses", "questions"
   add_foreign_key "user_question_statuses", "users"

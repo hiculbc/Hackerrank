@@ -10,6 +10,7 @@ import { Login } from './Components/authentication/Login';
 import { Signup } from './Components/authentication/Signup';
 import { Topics } from './Components/Topics/Topics';
 import {QueryClientProvider,QueryClient } from 'react-query';
+import { CodeEditor } from './Components/Editor/CodeEditor';
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function App() {
         <Route path="/login" element={<Template children={<Login />} /> } />
         <Route path="/signup" element={<Template children={<Signup />} />} />
         <Route path="/topics" element={<Topics />} />
+        <Route path="/question/:id" element={<CodeEditor />} />
         </Routes>
         <Footer />
         </QueryClientProvider>
