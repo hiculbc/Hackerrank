@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   post 'sessions/create'
   get 'sessions/destroy'
   get '/topics', to: 'questions#topics'
+  post '/solved', to: 'questions#solved'
 
   resources :users
   resources :questions, only: %i[index show] do

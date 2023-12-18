@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Common.scss";
-import { NavLink } from "react-router-dom";
-import { cookies } from "../../Cookies/cookies";
+import { NavLink, useNavigate } from "react-router-dom";
+import {  removeUserId } from "../../CommonFunctionalities/cookies";
+import { getUserId } from "../../CommonFunctionalities/cookies";
 
 export const Header = () => {
-    const userId = cookies.get("userId");
+
+    const navigate = useNavigate();
+    
+    const Logout = () => {
+        removeUserId();
+        navigate('/');
+    }
 
     return (
         <div className="header">
@@ -15,7 +22,7 @@ export const Header = () => {
             <div className="nav-right">
              <NavLink to="/">Home</NavLink>
              <NavLink to="/profile">Profile</NavLink>
-             <NavLink to="/login">Login</NavLink>
+            { getUserId() ? <div onClick={Logout} className="logout">Logout</div> : <NavLink to="/login">Login</NavLink> }
             </div>
         </div>
     )

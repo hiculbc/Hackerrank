@@ -1,10 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
-import { cookies } from "../../Cookies/cookies";
+import { setUserId } from "../../CommonFunctionalities/cookies";
 import { Link } from "react-router-dom";
 
 export const Signup = () => {
     const inputRef = useRef({});
+    const [messageStatus,setMessage] = useState({
+      isError: false,
+      message: ''
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,12 +16,25 @@ export const Signup = () => {
         for(const x in inputRef.current){
             user[x] = inputRef.current[x].value
         }
-        axios.post('http://localhost:3002/users',user).then((res) => cookies.set('userId',res.data)).catch((err) => console.log(err));
+        axios.post('http://localhost:3002/users',user).then((res) => { setUserId(res.data);
+        setMessage({
+          isError: false,
+          message: "LoggedIn Successfully"
+        }) 
+      }
+        ).catch((error) => { 
+          console.log(error);
+          setMessage({
+            isError: true,
+            message: Object.keys(error?.response?.data?.error)[0] + " " + Object.values(error?.response?.data?.error)[0]
+          })
+        });
     }
 
     return (
     <React.Fragment>
     <div className="signup">
+    {  messageStatus.message && <div className={messageStatus.isError ? 'error-msg' : 'success-msg'}>{ messageStatus.message} </div> }
       <h2>SignUp</h2>
       <form>
         <input

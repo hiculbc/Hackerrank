@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Header} from './Components/Common/Header';
 import { Footer } from './Components/Common/Footer';

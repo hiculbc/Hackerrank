@@ -13,6 +13,11 @@ class QuestionsController < ApplicationController
     render json: @questions
   end
 
+  def solved
+    @user = User.find(params[:user_id])
+    render json: @user.solved_questions.pluck(:id)
+  end
+
   def check
     @code = params[:code]
     @user_id = params[:user_id]
@@ -33,10 +38,13 @@ class QuestionsController < ApplicationController
         result.append({ testcase: each_testcase,
                         result: execute_javascript(@tempfile, each_testcase.testcase, each_testcase.solution.answer) })
       end
-      solved_question_count += (result.last.result == true)
+      solved_question_count += (result.last[:result] == true ? 1 : 0)
     end
 
-    @question.users.create if solved_question_count == @testcases.length && @question.users.where(id: @user_id).nil?
+    if solved_question_count == @testcases.length && @question.solved_users.where(id: @user_id).empty?
+      @question.users.create(user_id: @user_id)
+    end
+
     debugger
 
     render json: result

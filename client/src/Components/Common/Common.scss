@@ -1,6 +1,15 @@
+
 .header{
     display:flex;
     background-color: rgb(233, 231, 229);
+    a{
+        text-decoration: none;
+        color:black;
+    }
+    a:hover,.logout:hover{
+        cursor: pointer;
+        color:blue;
+    }
     margin: 0 0 2em 0;
     padding: 0.5em 1em 0.5em 1em;
     justify-content: space-between;
@@ -44,4 +53,30 @@
     display:flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 1em auto 1em auto;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+  width: 80%;
+}
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
 }

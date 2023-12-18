@@ -1,10 +1,17 @@
 import React from "react";
 import "./Topics.scss";
-import { useQuery, useQueries } from "react-query";
+import { useQueries } from "react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {  useIfLoggedIn } from "../../CommonFunctionalities/navigate";
+import { getUserId } from "../../CommonFunctionalities/cookies";
+import { Bookmark, BookmarkCheckIcon, CheckIcon } from "../../Icons/BootstrapIcons";
+ 
 
 export const Topics = () => {
+
+  useIfLoggedIn();
+
   const fetchQuestions = () => {
     return axios.get("http://localhost:3002/questions");
   };
@@ -13,6 +20,12 @@ export const Topics = () => {
     return axios.get("http://localhost:3002/topics");
   };
 
+  const fetchSolvedQuestions = () => {
+    return axios.post("http://localhost:3002/solved",{
+      user_id: getUserId()
+    })
+  }
+
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
@@ -20,6 +33,7 @@ export const Topics = () => {
   const results = useQueries([
     { queryKey: ["questions"], queryFn: fetchQuestions },
     { queryKey: ["topics"], queryFn: fetchTopics },
+    { queryKey: ["solved_questions"],queryFn: fetchSolvedQuestions }
   ]);
   const isLoading = results.some((query) => query.isLoading);
 
@@ -27,10 +41,9 @@ export const Topics = () => {
     return <h1>Loading...</h1>;
   }
 
-  const [{data: {data: questions}},{data: {data: topics}}] = results;
+  const [{data: {data: questions}},{data: {data: topics}},{data: {data: solved_questions}}] = results;
 
-  const filteredQuestions = questions;
-   
+  console.log(solved_questions);
 
   return  (
         <div className="list">
@@ -47,6 +60,7 @@ export const Topics = () => {
              <tr>
                 <th>S.No</th>
                 <th>Question</th>
+                <th>Solved</th>
                 <th>Difficulty</th>
                 <th>Topic</th>
              </tr>
@@ -54,7 +68,8 @@ export const Topics = () => {
                 questions.map((question,index) => {
                     return <tr>
                         <td>{index+1}</td>
-                        <td><Link to={`/question/${question.id}`}>{question.question.substr(0,50) + (question.question.length > 50 ? "...":"")}</Link></td>
+                        <td><Link to={`/question/${question.id}`}>{question.question.substr(0,70) + (question.question.length > 50 ? "...":"")}</Link></td>
+                        <td className={solved_questions.includes(question.id) ? 'easy' : ''}>{solved_questions.includes(question.id) ? <BookmarkCheckIcon width="26" height="26" /> : <Bookmark width="26" height="26" /> }</td>
                         <td className={question.difficulty}>{question.difficulty}</td>
                         <td>{capitalize(topics[question.topic])}</td>
                     </tr>

@@ -1,10 +1,16 @@
-import React, { useRef } from "react";
-import { cookies } from "../../Cookies/cookies";
+import React, { useRef, useState } from "react";
+import { setUserId } from "../../CommonFunctionalities/cookies";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export const Login = () => {
     const inputRef = useRef({});
+    const [messageStatus,setMessage] = useState({
+      isError:false,
+      message: null
+
+    });
+    let { state = {}} = useLocation();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,12 +18,25 @@ export const Login = () => {
         for(const x in inputRef.current){
             user[x] = inputRef.current[x].value
         }
-        axios.post('http://localhost:3002/sessions/create',user).then((res) => cookies.set('userId',res.data)).catch((err) => console.log(err));
+        axios.post('http://localhost:3002/sessions/create',user).then((res) => { 
+        setUserId(res.data);
+          setMessage({
+            isError: false,
+            message: "LoggedIn Successfully"
+          });
+       } ).catch((error) => {
+        console.log(error);
+        setMessage({
+          isError: true,
+          message: error?.response?.data?.message
+        })
+       });
     }
 
   return (
     <React.Fragment>
     <div className="login">
+      { (messageStatus.message || state?.message ) && <div className={messageStatus.isError ? 'error-msg' : 'success-msg'}>{messageStatus.message || state?.message} </div> }
       <h2>Login</h2>
       <form>
         <input
