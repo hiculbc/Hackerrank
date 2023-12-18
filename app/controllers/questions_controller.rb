@@ -15,6 +15,7 @@ class QuestionsController < ApplicationController
 
   def check
     @code = params[:code]
+    @user_id = params[:user_id]
     @isPython = params[:isPython]
     @question = Question.find(params[:id])
     @tempfile = create_tempfile @isPython
@@ -23,6 +24,7 @@ class QuestionsController < ApplicationController
     @testcases = @question.testcases
     @solutions = @question.solutions
     result = []
+    solved_question_count = 0
     @testcases.map do |each_testcase|
       if @isPython
         result.append({ testcase: each_testcase,
@@ -31,7 +33,11 @@ class QuestionsController < ApplicationController
         result.append({ testcase: each_testcase,
                         result: execute_javascript(@tempfile, each_testcase.testcase, each_testcase.solution.answer) })
       end
+      solved_question_count += (result.last.result == true)
     end
+
+    @question.users.create if solved_question_count == @testcases.length && @question.users.where(id: @user_id).nil?
+    debugger
 
     render json: result
   end

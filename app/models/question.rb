@@ -2,6 +2,7 @@ class Question < ApplicationRecord
   has_many :solutions
   has_many :testcases
   has_many :boiler_plates
+  has_many :users
 
   ARRAY = 0
   STRING = 1

@@ -6,6 +6,7 @@ import Editor from "@monaco-editor/react";
 import "./CodeEditor.scss";
 import { BrightnessHigh, BrightnessLow, RunIcon, WriteIcon } from "../../Icons/BootstrapIcons";
 import { Testcase } from "./Testcase";
+import { cookies } from "../../Cookies/cookies";
 
 export const CodeEditor = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ export const CodeEditor = () => {
   const [isPython, setIsPython] = useState(false);
   const [isDark,setIsDark] = useState(false);
   const [ testcaseResult,setTestcaseResult] = useState([]);
+  const userId = cookies.get("userId");
 
   const fetchQuestion = () => {
     return axios.get(`http://localhost:3002/questions/${id}`);
@@ -28,6 +30,7 @@ export const CodeEditor = () => {
       .post(`http://localhost:3002/questions/${id}/check`, {
         code: editorRef.current.getValue(),
         isPython: isPython,
+        user_id: userId
       })
       .then((res) => setTestcaseResult(res.data))
       .catch((err) => console.log(err));
