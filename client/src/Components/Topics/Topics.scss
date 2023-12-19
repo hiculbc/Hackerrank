@@ -18,27 +18,28 @@
         border-radius: 1em;
         margin: 1em;
     }
-    .questions{
-        margin-top: 2em;
-        table{
-            width: 100%;
-        }
-        tr:nth-child(even){
-            background-color: #f2f2f2;
-        }
-        td,th{
-            border-bottom: 1px solid black; 
-            padding: 1em;
-            a{
-                text-decoration: none;
-                color:black;
-            }
-            a:hover{
-                color:blue;
-            }
-        }
-   
-        font-family: 'Red Hat Display';
-      
+    
+}
+.questions,.solved-questions{
+    margin-top: 2em;
+    table{
+        width: 100%;
     }
+    tr:nth-child(even){
+        background-color: #f2f2f2;
+    }
+    td,th{
+        border-bottom: 1px solid black; 
+        padding: 1em;
+        a{
+            text-decoration: none;
+            color:black;
+        }
+        a:hover{
+            color:blue;
+        }
+    }
+
+    font-family: 'Red Hat Display';
+  
 }

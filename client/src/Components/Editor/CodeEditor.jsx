@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import "./CodeEditor.scss";
 import { Bookmark, BookmarkCheckIcon, BrightnessHigh, BrightnessLow, RunIcon, WriteIcon } from "../../Icons/BootstrapIcons";
-import { Testcase } from "./Testcase";
+import { RunTestCase, SubmitTestcase, Testcase } from "./Testcase";
 import {  useIfLoggedIn } from "../../CommonFunctionalities/navigate";
 import { getUserId } from "../../CommonFunctionalities/cookies";
 
@@ -19,7 +19,10 @@ export const CodeEditor = () => {
 
   const [isPython, setIsPython] = useState(false);
   const [isDark,setIsDark] = useState(false);
-  const [ testcaseResult,setTestcaseResult] = useState([]);
+  const [ testcaseResult,setTestcaseResult] = useState({
+    isTest: true,
+    result: []
+  });
 
   const fetchQuestion = () => {
     return axios.get(`http://localhost:3002/questions/${id}`);
@@ -35,16 +38,22 @@ export const CodeEditor = () => {
     })
   }
 
-  const handleRun = () => {
+  const handleRun = (isTest) => {
     axios
       .post(`http://localhost:3002/questions/${id}/check`, {
         code: editorRef.current.getValue(),
         isPython: isPython,
-        user_id: getUserId()
+        user_id: getUserId(),
+        isTest: isTest
       })
-      .then((res) => setTestcaseResult(res.data))
+      .then((res) => setTestcaseResult({
+        isTest: isTest,
+        output: res.data
+      }))
       .catch((err) => console.log(err));
   };
+
+  console.log(testcaseResult);
 
   const results = useQueries([
     { queryKey: ["question"], queryFn: fetchQuestion },
@@ -71,7 +80,7 @@ export const CodeEditor = () => {
   ] = results;
 
   const topics = ["Array", "String", "Hashing", "BinarySearch"];
-  let noOfTestcasesPassed = testcaseResult.reduce((result,each) => result + (each.result == true ? 1 : 0),0);
+  let noOfTestcasesPassed = testcaseResult?.isTest ? 0 : testcaseResult?.output?.reduce((result,each) => result + (each.result == true ? 1 : 0),0);
 
   return (
     <div className="editor">
@@ -115,6 +124,10 @@ export const CodeEditor = () => {
             </div>
           </div>
           {isDark ?  <div onClick={() => setIsDark(false)} className="editor-menu-icon"><BrightnessHigh /></div> : <div onClick={() => setIsDark(true)} className="editor-menu-icon"><BrightnessLow /></div> }
+          <button className="btn editor-testcase-menu-button" onClick={() => handleRun(false)}>
+            Run
+            {<RunIcon />}
+          </button>
         </div>
 
         <Editor
@@ -134,20 +147,14 @@ export const CodeEditor = () => {
         <div className="editor-testcase">
           <div className="editor-testcase-menu">
             <div className={testcaseResult.length?'underline':''}><strong>Console</strong></div>
-          <button className="btn editor-testcase-menu-button" onClick={handleRun}>
-            Run
+          <button className="btn editor-testcase-menu-button" onClick={() => handleRun(true)}>
+            Test
             {<RunIcon />}
           </button>
           </div>
           <div className="editor-testcase-examples">
-             {
-              testcaseResult.length>0 && 
-              <p className={noOfTestcasesPassed == testcaseResult.length ? 'passed overall' : 'failed overall'}>{noOfTestcasesPassed}/{testcaseResult.length} passed</p>
-            }
             {
-              testcaseResult.map((each_result,index) => {
-                return <Testcase each_result= {each_result} index={index} />
-              })
+              testcaseResult.isTest ? <RunTestCase testcaseResult={testcaseResult} /> : <SubmitTestcase testcaseResult={testcaseResult} noOfTestcasesPassed={noOfTestcasesPassed}/> 
             }
 
           </div>

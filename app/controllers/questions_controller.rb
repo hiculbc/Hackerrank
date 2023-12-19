@@ -15,7 +15,11 @@ class QuestionsController < ApplicationController
 
   def solved
     @user = User.find(params[:user_id])
-    render json: @user.solved_questions.pluck(:id)
+    if params[:only_ids]
+      render json: @user.solved_questions.pluck(:id)
+    else
+      render json: @user.solved_questions
+    end
   end
 
   def check
@@ -28,26 +32,42 @@ class QuestionsController < ApplicationController
     @tempfile.rewind
     @testcases = @question.testcases
     @solutions = @question.solutions
-    result = []
-    solved_question_count = 0
-    @testcases.map do |each_testcase|
+    if params[:isTest]
       if @isPython
-        result.append({ testcase: each_testcase,
-                        result: execute_python(@tempfile, each_testcase.testcase, each_testcase.solution.answer) })
+        output = execute_python(@tempfile, @testcases.first.testcase, @testcases.first.solution.answer, true)
+        render json: {
+          testcase: @testcases.first,
+          result: output
+        }
       else
-        result.append({ testcase: each_testcase,
-                        result: execute_javascript(@tempfile, each_testcase.testcase, each_testcase.solution.answer) })
+        output = execute_javascript(@tempfile, @testcases.first.testcase, @testcases.first.solution.answer, true)
+        render json: {
+          testcase: @testcases.first,
+          result: output
+        }
       end
-      solved_question_count += (result.last[:result] == true ? 1 : 0)
+    else
+      result = []
+      solved_question_count = 0
+      @testcases.map do |each_testcase|
+        if @isPython
+          result.append({ testcase: each_testcase,
+                          result: execute_python(@tempfile, each_testcase.testcase, each_testcase.solution.answer,
+                                                 false) })
+        else
+          result.append({ testcase: each_testcase,
+                          result: execute_javascript(@tempfile, each_testcase.testcase,
+                                                     each_testcase.solution.answer, false) })
+        end
+        solved_question_count += (result.last[:result] == true ? 1 : 0)
+      end
+
+      if solved_question_count == @testcases.length && @question.solved_users.where(id: @user_id).empty?
+        @question.users.create(user_id: @user_id)
+      end
+
+      render json: result
     end
-
-    if solved_question_count == @testcases.length && @question.solved_users.where(id: @user_id).empty?
-      @question.users.create(user_id: @user_id)
-    end
-
-    debugger
-
-    render json: result
   end
 
   def topics
@@ -56,13 +76,23 @@ class QuestionsController < ApplicationController
 
   private
 
-  def execute_python(tempfile, testcase, _solution)
-    result = `python3 #{tempfile.path} #{testcase}`
+  def execute_python(tempfile, testcase, _solution, _isTest)
+    output_file = create_tempfile(true)
+    `python3 #{tempfile.path} #{testcase} > #{output_file.path} 2>&1`
+    output_file.rewind
+    result = output_file.read
+    return result if _isTest
+
     result == _solution
   end
 
-  def execute_javascript(tempfile, testcase, _solution)
-    result = `node #{tempfile.path} #{testcase}`
+  def execute_javascript(tempfile, testcase, _solution, _isTest)
+    output_file = create_tempfile(true)
+    `node #{tempfile.path} #{testcase} > #{output_file.path} 2>&1`
+    output_file.rewind
+    result = output_file.read
+    return result if _isTest
+
     result == _solution
   end
 

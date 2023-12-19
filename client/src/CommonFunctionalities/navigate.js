@@ -13,3 +13,8 @@ export const useIfLoggedIn = () => {
     }
   });
 }};
+
+export const useNavigateToHome = () => {
+    const navigate = useNavigate();
+    navigate('/');
+}

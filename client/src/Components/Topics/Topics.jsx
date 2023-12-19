@@ -22,7 +22,8 @@ export const Topics = () => {
 
   const fetchSolvedQuestions = () => {
     return axios.post("http://localhost:3002/solved",{
-      user_id: getUserId()
+      user_id: getUserId(),
+      only_ids: true
     })
   }
 

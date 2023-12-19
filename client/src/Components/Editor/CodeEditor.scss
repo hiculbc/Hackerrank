@@ -80,4 +80,19 @@
     }
    
 }
+
+.test{
+    display:flex;
+    justify-content: space-around;
+    .result{
+        width: 40%;
+        border-right: 5px solid rgb(233, 231, 229);
+    }
+    .testcase{
+        p{
+            text-align: start;
+        }
+        width: 40%;
+    }
+}
  

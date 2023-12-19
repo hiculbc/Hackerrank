@@ -17,7 +17,7 @@ export const Header = () => {
         <div className="header">
             <div className="nav-left">
             <h3>Hackerrank</h3>
-            <NavLink to="/topics">Topics</NavLink>
+            <NavLink to="/topics">Problems</NavLink>
             </div>
             <div className="nav-right">
              <NavLink to="/">Home</NavLink>
